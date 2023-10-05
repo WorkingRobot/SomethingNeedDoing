@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Dalamud.Logging;
 using SomethingNeedDoing.Grammar.Modifiers;
 using SomethingNeedDoing.Misc;
 
@@ -130,13 +129,13 @@ internal abstract class MacroCommand
         if (this.WaitUntil == 0)
         {
             sleep = TimeSpan.FromMilliseconds(this.Wait);
-            PluginLog.Debug($"Sleeping for {sleep.TotalMilliseconds} millis");
+            Service.Log.Debug($"Sleeping for {sleep.TotalMilliseconds} millis");
         }
         else
         {
             var value = Rand.Next(this.Wait, this.WaitUntil);
             sleep = TimeSpan.FromMilliseconds(value);
-            PluginLog.Debug($"Sleeping for {sleep.TotalMilliseconds} millis ({this.Wait} to {this.WaitUntil})");
+            Service.Log.Debug($"Sleeping for {sleep.TotalMilliseconds} millis ({this.Wait} to {this.WaitUntil})");
         }
 
         await Task.Delay(sleep, token);

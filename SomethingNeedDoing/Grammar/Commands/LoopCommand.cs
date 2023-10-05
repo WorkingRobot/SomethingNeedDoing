@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Dalamud.Logging;
 using SomethingNeedDoing.Exceptions;
 using SomethingNeedDoing.Grammar.Modifiers;
 using SomethingNeedDoing.Misc;
@@ -66,7 +65,7 @@ internal class LoopCommand : MacroCommand
     /// <inheritdoc/>
     public async override Task Execute(ActiveMacro macro, CancellationToken token)
     {
-        PluginLog.Debug($"Executing: {this.Text}");
+        Service.Log.Debug($"Executing: {this.Text}");
 
         if (this.loopsRemaining == MaxLoops)
         {

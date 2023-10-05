@@ -46,7 +46,7 @@ internal class RequireRepairCommand : MacroCommand
     /// <inheritdoc/>
     public async override Task Execute(ActiveMacro macro, CancellationToken token)
     {
-        PluginLog.Debug($"Executing: {this.Text}");
+        Service.Log.Debug($"Executing: {this.Text}");
 
         if (CommandInterface.Instance.NeedsRepair())
             throw new MacroPause("You need to repair", UiColor.Yellow);

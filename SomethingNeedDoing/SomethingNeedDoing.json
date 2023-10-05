@@ -1,9 +1,9 @@
 {
-  "Author": "daemitus",
-  "Name": "Something Need Doing",
-  "Punchline": "Work work.",
-  "Description": "A hard-working peon that crafts what you tell him to. An all-in-one sythesizing solution.",
-  "RepoUrl": "https://github.com/daemitus/SomethingNeedDoing",
-  "IconUrl": "https://github.com/daemitus/SomethingNeedDoing/raw/master/res/icon.png",
-  "ImageUrls": []
+    "Author": "Asriel Camora & daemitus",
+    "Name": "Something Need Doing",
+    "Punchline": "Work work.",
+    "Description": "A hard-working peon that crafts what you tell him to. An all-in-one sythesizing solution.",
+    "RepoUrl": "https://github.com/WorkingRobot/SomethingNeedDoing",
+    "IconUrl": "https://github.com/WorkingRobot/SomethingNeedDoing/raw/master/res/icon.png",
+    "ImageUrls": []
 }

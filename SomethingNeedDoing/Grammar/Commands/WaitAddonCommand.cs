@@ -62,7 +62,7 @@ internal class WaitAddonCommand : MacroCommand
     /// <inheritdoc/>
     public async override Task Execute(ActiveMacro macro, CancellationToken token)
     {
-        PluginLog.Debug($"Executing: {this.Text}");
+        Service.Log.Debug($"Executing: {this.Text}");
 
         var (addonPtr, isVisible) = await this.LinearWait(AddonCheckInterval, this.maxWait, this.IsAddonVisible, token);
 

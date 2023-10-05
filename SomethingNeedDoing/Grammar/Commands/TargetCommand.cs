@@ -54,7 +54,7 @@ internal class TargetCommand : MacroCommand
     /// <inheritdoc/>
     public override async Task Execute(ActiveMacro macro, CancellationToken token)
     {
-        PluginLog.Debug($"Executing: {this.targetIndex}");
+        Service.Log.Debug($"Executing: {this.targetIndex}");
 
         var target = Service.ObjectTable.FirstOrDefault(obj => obj.Name.TextValue.ToLowerInvariant() == this.targetName &&
                                                                (this.targetIndex <= 0 || obj.ObjectIndex == this.targetIndex));
@@ -62,7 +62,7 @@ internal class TargetCommand : MacroCommand
         if (target == default)
             throw new MacroCommandError("Could not find target");
 
-        Service.TargetManager.SetTarget(target);
+        Service.TargetManager.Target = target;
 
         await this.PerformWait(token);
     }

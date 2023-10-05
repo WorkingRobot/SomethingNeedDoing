@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Logging;
 using SomethingNeedDoing.Exceptions;
 using SomethingNeedDoing.Grammar.Modifiers;
 using SomethingNeedDoing.Misc;
@@ -78,11 +76,11 @@ internal class ActionCommand : MacroCommand
     /// <inheritdoc/>
     public async override Task Execute(ActiveMacro macro, CancellationToken token)
     {
-        PluginLog.Debug($"Executing: {this.Text}");
+        Service.Log.Debug($"Executing: {this.Text}");
 
         if (!this.conditionMod.HasCondition())
         {
-            PluginLog.Debug($"Condition skip: {this.Text}");
+            Service.Log.Debug($"Condition skip: {this.Text}");
             return;
         }
 
@@ -92,20 +90,20 @@ internal class ActionCommand : MacroCommand
             {
                 if (CommandInterface.Instance.IsNotCrafting())
                 {
-                    PluginLog.Debug($"Not crafting skip: {this.Text}");
+                    Service.Log.Debug($"Not crafting skip: {this.Text}");
                     return;
                 }
 
                 if (CommandInterface.Instance.HasMaxProgress())
                 {
-                    PluginLog.Debug($"Max progress skip: {this.Text}");
+                    Service.Log.Debug($"Max progress skip: {this.Text}");
                     return;
                 }
             }
 
             if (Service.Configuration.QualitySkip && IsSkippableCraftingQualityAction(this.actionName) && CommandInterface.Instance.HasMaxQuality())
             {
-                PluginLog.Debug($"Max quality skip: {this.Text}");
+                Service.Log.Debug($"Max quality skip: {this.Text}");
                 return;
             }
 
@@ -115,7 +113,7 @@ internal class ActionCommand : MacroCommand
 
             if (Service.Configuration.SmartWait)
             {
-                PluginLog.Debug("Smart wait");
+                Service.Log.Debug("Smart wait");
 
                 if (this.unsafeMod.IsUnsafe)
                 {

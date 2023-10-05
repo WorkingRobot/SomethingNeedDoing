@@ -78,7 +78,7 @@ internal class RequireStatsCommand : MacroCommand
     /// <inheritdoc/>
     public async override Task Execute(ActiveMacro macro, CancellationToken token)
     {
-        PluginLog.Debug($"Executing: {this.Text}");
+        Service.Log.Debug($"Executing: {this.Text}");
 
         bool AreStatsGood() => CommandInterface.Instance.HasStats(this.requiredCraftsmanship, this.requiredControl, this.requiredCp);
 

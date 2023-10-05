@@ -66,13 +66,13 @@ internal partial class MacroManager : IDisposable
         this.pausedWaiter.Dispose();
     }
 
-    private void OnLogin(object? sender, EventArgs e)
+    private void OnLogin()
     {
         this.loggedInWaiter.Set();
         this.State = LoopState.Waiting;
     }
 
-    private void OnLogout(object? sender, EventArgs e)
+    private void OnLogout()
     {
         this.loggedInWaiter.Reset();
         this.State = LoopState.NotLoggedIn;
@@ -122,19 +122,19 @@ internal partial class MacroManager : IDisposable
             }
             catch (OperationCanceledException)
             {
-                PluginLog.Verbose("Event loop has been cancelled");
+                Service.Log.Verbose("Event loop has been cancelled");
                 this.State = LoopState.Stopped;
                 break;
             }
             catch (ObjectDisposedException)
             {
-                PluginLog.Verbose("Event loop has been disposed");
+                Service.Log.Verbose("Event loop has been disposed");
                 this.State = LoopState.Stopped;
                 break;
             }
             catch (Exception ex)
             {
-                PluginLog.Error(ex, "Unhandled exception occurred");
+                Service.Log.Error(ex, "Unhandled exception occurred");
                 Service.ChatManager.PrintError("Peon has died unexpectedly.");
                 this.macroStack.Clear();
                 this.PlayErrorSound();

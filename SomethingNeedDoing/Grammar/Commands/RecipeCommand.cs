@@ -56,13 +56,13 @@ internal class RecipeCommand : MacroCommand
     /// <inheritdoc/>
     public async override Task Execute(ActiveMacro macro, CancellationToken token)
     {
-        PluginLog.Debug($"Executing: {this.Text}");
+        Service.Log.Debug($"Executing: {this.Text}");
 
         if (this.AddonSynthesisIsOpen())
             throw new MacroCommandError("/recipe cannot be used while the Synthesis window is open.");
 
         var recipeId = this.SearchRecipeId(this.recipeName);
-        PluginLog.Debug($"Recipe found: {recipeId}");
+        Service.Log.Debug($"Recipe found: {recipeId}");
 
         this.OpenRecipeNote(recipeId);
 

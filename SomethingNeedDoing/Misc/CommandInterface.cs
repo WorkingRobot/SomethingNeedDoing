@@ -3,7 +3,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 
 using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -163,20 +162,20 @@ public class CommandInterface : ICommandInterface
         var im = InventoryManager.Instance();
         if (im == null)
         {
-            PluginLog.Error("InventoryManager was null");
+            Service.Log.Error("InventoryManager was null");
             return false;
         }
 
         var equipped = im->GetInventoryContainer(InventoryType.EquippedItems);
         if (equipped == null)
         {
-            PluginLog.Error("InventoryContainer was null");
+            Service.Log.Error("InventoryContainer was null");
             return false;
         }
 
         if (equipped->Loaded == 0)
         {
-            PluginLog.Error($"InventoryContainer is not loaded");
+            Service.Log.Error($"InventoryContainer is not loaded");
             return false;
         }
 
@@ -201,20 +200,20 @@ public class CommandInterface : ICommandInterface
         var im = InventoryManager.Instance();
         if (im == null)
         {
-            PluginLog.Error("InventoryManager was null");
+            Service.Log.Error("InventoryManager was null");
             return false;
         }
 
         var equipped = im->GetInventoryContainer(InventoryType.EquippedItems);
         if (equipped == null)
         {
-            PluginLog.Error("InventoryContainer was null");
+            Service.Log.Error("InventoryContainer was null");
             return false;
         }
 
         if (equipped->Loaded == 0)
         {
-            PluginLog.Error("InventoryContainer is not loaded");
+            Service.Log.Error("InventoryContainer is not loaded");
             return false;
         }
 
@@ -241,7 +240,7 @@ public class CommandInterface : ICommandInterface
 
         if (allExtract)
         {
-            PluginLog.Debug("All items are spiritbound, pausing");
+            Service.Log.Debug("All items are spiritbound, pausing");
             return true;
         }
 
@@ -250,7 +249,7 @@ public class CommandInterface : ICommandInterface
             // Don't wait, extract immediately
             if (within == 100)
             {
-                PluginLog.Debug("An item is spiritbound, pausing");
+                Service.Log.Debug("An item is spiritbound, pausing");
                 return true;
             }
 
@@ -258,12 +257,12 @@ public class CommandInterface : ICommandInterface
             // i.e. 100 and 99, do another craft to finish the 99.
             if (nextHighest >= within)
             {
-                PluginLog.Debug($"The next highest spiritbond is above ({nextHighest} >= {within}), keep going");
+                Service.Log.Debug($"The next highest spiritbond is above ({nextHighest} >= {within}), keep going");
                 return false;
             }
             else
             {
-                PluginLog.Debug($"The next highest spiritbond is below ({nextHighest} < {within}), pausing");
+                Service.Log.Debug($"The next highest spiritbond is below ({nextHighest} < {within}), pausing");
                 return true;
             }
         }
@@ -277,7 +276,7 @@ public class CommandInterface : ICommandInterface
         var uiState = UIState.Instance();
         if (uiState == null)
         {
-            PluginLog.Error("UIState is null");
+            Service.Log.Error("UIState is null");
             return false;
         }
 
@@ -392,7 +391,7 @@ public class CommandInterface : ICommandInterface
         var popup = &addon->PopupMenu.PopupMenu;
 
         var count = popup->EntryCount;
-        PluginLog.Debug($"index={index} // Count={count} // {index < 0 || index > count}");
+        Service.Log.Debug($"index={index} // Count={count} // {index < 0 || index > count}");
         if (index < 0 || index > count)
             throw new MacroCommandError("Index out of range");
 

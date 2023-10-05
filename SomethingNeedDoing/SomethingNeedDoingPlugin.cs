@@ -53,9 +53,6 @@ namespace SomethingNeedDoing
         }
 
         /// <inheritdoc/>
-        public string Name => "Something Need Doing";
-
-        /// <inheritdoc/>
         public void Dispose()
         {
             Service.CommandManager.RemoveHandler(Command);

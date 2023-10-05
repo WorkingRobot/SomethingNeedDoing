@@ -7,6 +7,7 @@ using Dalamud.Game;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using SomethingNeedDoing.Misc;
@@ -28,7 +29,7 @@ internal class ChatManager : IDisposable
     /// </summary>
     public ChatManager()
     {
-        SignatureHelper.Initialise(this);
+        Service.GameInteropProvider.InitializeFromAttributes(this);
         Service.Framework.Update += this.FrameworkUpdate;
     }
 
@@ -47,7 +48,7 @@ internal class ChatManager : IDisposable
     /// </summary>
     /// <param name="message">The message to print.</param>
     public void PrintMessage(string message)
-        => Service.ChatGui.PrintChat(new XivChatEntry()
+        => Service.ChatGui.Print(new XivChatEntry()
         {
             Type = Service.Configuration.ChatType,
             Message = $"[SND] {message}",
@@ -59,7 +60,7 @@ internal class ChatManager : IDisposable
     /// <param name="message">The message to print.</param>
     /// <param name="color">UiColor value.</param>
     public void PrintColor(string message, UiColor color)
-        => Service.ChatGui.PrintChat(
+        => Service.ChatGui.Print(
             new XivChatEntry()
             {
                 Type = Service.Configuration.ChatType,
@@ -74,7 +75,7 @@ internal class ChatManager : IDisposable
     /// </summary>
     /// <param name="message">The message to print.</param>
     public void PrintError(string message)
-        => Service.ChatGui.PrintChat(new XivChatEntry()
+        => Service.ChatGui.Print(new XivChatEntry()
         {
             Type = Service.Configuration.ErrorChatType,
             Message = $"[SND] {message}",
@@ -99,7 +100,7 @@ internal class ChatManager : IDisposable
             continue;
     }
 
-    private void FrameworkUpdate(Framework framework)
+    private void FrameworkUpdate(IFramework framework)
     {
         if (this.chatBoxMessages.Reader.TryRead(out var message))
         {

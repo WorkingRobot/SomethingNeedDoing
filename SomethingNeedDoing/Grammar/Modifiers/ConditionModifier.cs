@@ -68,7 +68,7 @@ internal class ConditionModifier : MacroModifier
         var addon = Service.GameGui.GetAddonByName("Synthesis", 1);
         if (addon == IntPtr.Zero)
         {
-            PluginLog.Debug("Could not find Synthesis addon");
+            Service.Log.Debug("Could not find Synthesis addon");
             return true;
         }
 
