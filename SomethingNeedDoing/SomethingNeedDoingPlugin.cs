@@ -24,7 +24,7 @@ namespace SomethingNeedDoing
         /// Initializes a new instance of the <see cref="SomethingNeedDoingPlugin"/> class.
         /// </summary>
         /// <param name="pluginInterface">Dalamud plugin interface.</param>
-        public SomethingNeedDoingPlugin(DalamudPluginInterface pluginInterface)
+        public SomethingNeedDoingPlugin(IDalamudPluginInterface pluginInterface)
         {
             pluginInterface.Create<Service>();
 

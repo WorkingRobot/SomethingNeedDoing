@@ -1,14 +1,12 @@
 using System;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Channels;
 
-using Dalamud.Game;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
+using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using SomethingNeedDoing.Misc;
 
@@ -22,7 +20,7 @@ internal class ChatManager : IDisposable
     private readonly Channel<string> chatBoxMessages = Channel.CreateUnbounded<string>();
 
     [Signature("48 89 5C 24 ?? 57 48 83 EC 20 48 8B FA 48 8B D9 45 84 C9")]
-    private readonly ProcessChatBoxDelegate processChatBox = null!;
+    private readonly SendChatDelegate sendChat = null!;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ChatManager"/> class.
@@ -33,7 +31,7 @@ internal class ChatManager : IDisposable
         Service.Framework.Update += this.FrameworkUpdate;
     }
 
-    private unsafe delegate void ProcessChatBoxDelegate(UIModule* uiModule, IntPtr message, IntPtr unused, byte a4);
+    private unsafe delegate void SendChatDelegate(UIModule* @this, Utf8String* message, Utf8String* historyMessage = null, bool pushToHistory = false);
 
     /// <inheritdoc/>
     public void Dispose()
@@ -110,50 +108,11 @@ internal class ChatManager : IDisposable
 
     private unsafe void SendMessageInternal(string message)
     {
-        var framework = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance();
-        var uiModule = framework->GetUiModule();
+        ArgumentException.ThrowIfNullOrWhiteSpace(message);
 
-        using var payload = new ChatPayload(message);
-        var payloadPtr = Marshal.AllocHGlobal(400);
-        Marshal.StructureToPtr(payload, payloadPtr, false);
-
-        this.processChatBox(uiModule, payloadPtr, IntPtr.Zero, 0);
-
-        Marshal.FreeHGlobal(payloadPtr);
-    }
-
-    [StructLayout(LayoutKind.Explicit)]
-    private readonly struct ChatPayload : IDisposable
-    {
-        [FieldOffset(0)]
-        private readonly IntPtr textPtr;
-
-        [FieldOffset(16)]
-        private readonly ulong textLen;
-
-        [FieldOffset(8)]
-        private readonly ulong unk1;
-
-        [FieldOffset(24)]
-        private readonly ulong unk2;
-
-        internal ChatPayload(string text)
-        {
-            var stringBytes = Encoding.UTF8.GetBytes(text);
-            this.textPtr = Marshal.AllocHGlobal(stringBytes.Length + 30);
-
-            Marshal.Copy(stringBytes, 0, this.textPtr, stringBytes.Length);
-            Marshal.WriteByte(this.textPtr + stringBytes.Length, 0);
-
-            this.textLen = (ulong)(stringBytes.Length + 1);
-
-            this.unk1 = 64;
-            this.unk2 = 0;
-        }
-
-        public void Dispose()
-        {
-            Marshal.FreeHGlobal(this.textPtr);
-        }
+        var str = Utf8String.FromString(message);
+        str->SanitizeString(0x27F, null);
+        this.sendChat(UIModule.Instance(), str);
+        str->Dtor(true);
     }
 }

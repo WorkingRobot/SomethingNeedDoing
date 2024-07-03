@@ -40,7 +40,7 @@ namespace SomethingNeedDoing
         /// Gets the Dalamud plugin interface.
         /// </summary>
         [PluginService]
-        internal static DalamudPluginInterface Interface { get; private set; } = null!;
+        internal static IDalamudPluginInterface Interface { get; private set; } = null!;
 
         /// <summary>
         /// Gets the Dalamud chat gui.

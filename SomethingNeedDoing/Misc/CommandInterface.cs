@@ -33,7 +33,7 @@ public class CommandInterface : ICommandInterface
     public unsafe bool IsCollectable()
     {
         var addon = this.GetSynthesisAddon();
-        return addon->AtkUnitBase.UldManager.NodeList[34]->IsVisible;
+        return addon->AtkUnitBase.UldManager.NodeList[34]->IsVisible();
     }
 
     /// <inheritdoc/>
